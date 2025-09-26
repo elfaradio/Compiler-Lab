@@ -10,7 +10,9 @@ int main()
     printf("//hello");
     char c = '\\\/';
     
-
+    
+    printf("hello");
+    printf("hhh"); 
     printf("/*%d\n", a);
     printf("%d", a / 10);
 

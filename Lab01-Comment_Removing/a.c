@@ -12,7 +12,9 @@ int main()
     /* fhj
     \fjk\
     hfkj*/
-
+    /* hollo*/
+    printf("hello");
+    printf("hhh"); /////////////arafat
     printf("/*%d\n", a);
     printf("%d", a / 10);
 
