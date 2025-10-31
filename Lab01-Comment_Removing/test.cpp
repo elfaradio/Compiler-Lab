@@ -1,45 +1,45 @@
 #include <iostream>
+#include <string>
 #include <cstdio>
+#include <vector>
 using namespace std;
 
 int main()
 {
+
     FILE *in = fopen("a.c", "r");
     FILE *out = fopen("output.c", "w");
-
-    if (!in || !out)
+    if (!in or !out)
     {
-        cout << "Cannot open file!" << endl;
+        cout << "sorry";
         return 1;
     }
-
     int c, nxt;
-    bool STRING = false, CHAR = false, single = false, multi = false;
-
+    bool str = false, cha = false, single = false, multi = false;
     while ((c = fgetc(in)) != EOF)
     {
-
-        // Str op
-        if (STRING)
+        if (str)
         {
             fputc(c, out);
             if (c == '"')
-                STRING = false;
+            {
+                str = false;
+            }
+
             continue;
         }
-
-        // Char Op
-        if (CHAR)
+        if (cha)
         {
             fputc(c, out);
             if (c == '\'')
-                CHAR = false;
+            {
+                cha = false;
+            }
             continue;
         }
-
-        // Single comment
         if (single)
         {
+
             if (c == '\n')
             {
                 single = false;
@@ -47,36 +47,30 @@ int main()
             }
             continue;
         }
-
-        // Multiline Comment
         if (multi)
         {
-            if (c == '*' && (nxt = fgetc(in)) != EOF)
+            if (c == '*' and (nxt = fgetc(in)) != EOF)
             {
                 if (nxt == '/')
+                {
                     multi = false;
+                }
             }
             continue;
         }
-
-        // Str Start
         if (c == '"')
         {
-            STRING = true;
+            str = true;
             fputc(c, out);
             continue;
         }
-
-        // char start
         if (c == '\'')
         {
-            CHAR = true;
+            cha = true;
             fputc(c, out);
             continue;
         }
-
-        // For Comments
-        if (c == '/' && (nxt = fgetc(in)) != EOF)
+        if (c == '/' and (nxt = fgetc(in)) != EOF)
         {
             if (nxt == '/')
             {
@@ -95,11 +89,8 @@ int main()
                 continue;
             }
         }
-
         fputc(c, out);
     }
-
     fclose(in);
     fclose(out);
-    return 0;
 }
