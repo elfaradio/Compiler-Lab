@@ -1,1 +1,10 @@
-is Not Valid
+int - INVALID
+myVar - VALID
+10 - INVALID
+_temp - VALID
+myVar - VALID
+if - INVALID
+myVar - VALID
+0 - INVALID
+float - INVALID
+2ndVar - INVALID

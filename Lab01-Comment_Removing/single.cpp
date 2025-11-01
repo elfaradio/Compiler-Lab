@@ -5,19 +5,25 @@ int main()
 {
     FILE *in = fopen("a.c", "r");
     FILE *out = fopen("output.c", "w");
+
     if (!in || !out)
+    {
+        cout << "Cannot open file!" << endl;
         return 1;
+    }
 
-    char code[100000];
-    char *st = code;
+    char ans[100000];
+    char *x = ans;
     int c;
-
-    char *p = code;
     while ((c = fgetc(in)) != EOF)
-        *p++ = c;
-    *p = '\0';
+    {
+        *x++ = c;
+    }
+    *x = '\0';
     fclose(in);
 
+    char *st = ans;
+    char *en = ans;
     bool str = false, ch = false;
     bool s = false, m = false;
 
@@ -26,7 +32,8 @@ int main()
 
         if (str)
         {
-            fputc(*st, out);
+            *en = *st;
+            en++;
             if (*st == '"')
                 str = false;
             st++;
@@ -35,7 +42,8 @@ int main()
 
         if (ch)
         {
-            fputc(*st, out);
+            *en = *st;
+            en++;
             if (*st == '\'')
                 ch = false;
             st++;
@@ -46,8 +54,9 @@ int main()
         {
             if (*st == '\n')
             {
-                fputc(*st, out);
                 s = false;
+                *en = *st;
+                en++;
             }
             st++;
             continue;
@@ -59,16 +68,19 @@ int main()
             {
                 m = false;
                 st += 2;
-                continue;
             }
-            st++;
+            else
+            {
+                st++;
+            }
             continue;
         }
 
         if (*st == '"')
         {
             str = true;
-            fputc(*st, out);
+            *en = *st;
+            en++;
             st++;
             continue;
         }
@@ -76,31 +88,34 @@ int main()
         if (*st == '\'')
         {
             ch = true;
-            fputc(*st, out);
+            *en = *st;
             st++;
+            en++;
             continue;
         }
 
-        if (*st == '/' && *(st + 1) != '\0')
+        if (*st == '/' && (*(st + 1) == '/' || *(st + 1) == '*'))
         {
             if (*(st + 1) == '/')
             {
                 s = true;
-                st += 2;
-                continue;
             }
-            else if (*(st + 1) == '*')
+            else
             {
                 m = true;
-                st += 2;
-                continue;
             }
+            st += 2;
+            continue;
         }
 
-        fputc(*st, out);
+        *en = *st;
         st++;
+        en++;
     }
 
+    *en = '\0';
+
+    fputs(ans, out);
     fclose(out);
 
     return 0;
